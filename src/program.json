@@ -1,0 +1,42 @@
+{
+	"main": {
+        "number_of_callers": 0,
+        "function_body" : "cout << \"Hello World!\" << endl; cout << a() << endl; cout << b() << endl; cout << c() << endl; cout << d() << endl; cout << e() << endl; cout << f() << endl; return 0;",
+        "calls_functions": ["function1", "function2", "function3", "function4", "function5", "function6"]
+    },
+    "function1": {
+        "number_of_callers": 1,
+        "function_body" : "return 1;",
+        "calls_functions": []
+    },
+    "function2": {
+        "number_of_callers": 1,
+        "function_body" : "return 2;",
+        "calls_functions": []
+    },
+    "function3": {
+        "number_of_callers": 1,
+        "function_body" : "return 3;",
+        "calls_functions": []
+    },
+    "function4": {
+        "number_of_callers": 1,
+        "function_body" : "return function7();",
+        "calls_functions": ["function7"]
+    },
+    "function5": {
+        "number_of_callers": 2,
+        "function_body" : "return 4;",
+        "calls_functions": []
+    },
+    "function6": {
+        "number_of_callers": 1,
+        "function_body" : "return function5() + 2;",
+        "calls_functions": ["function5"]
+    },
+    "function7": {
+        "number_of_callers": 1,
+        "function_body" : "return 5;",
+        "calls_functions": []
+    }
+}
