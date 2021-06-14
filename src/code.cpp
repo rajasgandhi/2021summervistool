@@ -15,7 +15,6 @@ int function3() {
     return 3;
 }
 
-
 int function7() {
     return 5;
 }
