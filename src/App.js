@@ -2,6 +2,7 @@ import './App.css';
 import React, { useState } from 'react';
 import Graph from 'react-graph-vis';
 import NodeInfo from './NodeInfo';
+import EdgeInfo from './EdgeInfo';
 
 var programData = require('./program.json');
 
@@ -45,11 +46,15 @@ function getEdges() {
 function App() {
 	getNodes();
 	getEdges();
-	const [popUpVisible, setPopUpVisible] = useState(false);
+	const [network, setNetwork] = useState(null);
+	const [nodePopUp, setNodePopUp] = useState(false);
+	const [edgePopUp, setEdgePopUp] = useState(false);
 	const [funcName, setFuncName] = useState('');
 	const [numCallers, setNumCallers] = useState('');
 	const [funcBody, setFuncBody] = useState('');
 	const [callsFunctions, setCallsFunctions] = useState('');
+	const [fromNode, setFromNode] = useState('');
+	const [toNode, setToNode] = useState('');
 
 	const graph = {
 		nodes: graphnodes,
@@ -75,19 +80,31 @@ function App() {
 	};
 
 	const events = {
-		select: function (event) {
-			//console.log(selectedNode);
-			setPopUpVisible(true);
+		selectNode: function (event) {
+			//console.log(event);
 			setFuncName(event.nodes);
 			setNumCallers(programData[event.nodes]['number_of_callers']);
 			setFuncBody(programData[event.nodes]['function_body']);
 			setCallsFunctions(programData[event.nodes]['calls_functions'].toString());
+			setNodePopUp(true);
+			
 		},
+		selectEdge: function (event) {
+			//console.log(event);
+			const connectedNodes = network.getConnectedNodes(event.edges);
+			setFromNode(connectedNodes[0].toString());
+			setToNode(connectedNodes[1].toString());
+			setEdgePopUp(true);
+		}
 	};
 
-	const toggleVisible = () => {
-		setPopUpVisible(!popUpVisible);
+	const toggleNodeVisible = () => {
+		setNodePopUp(!nodePopUp);
 	};
+
+	const toggleEdgeVisible = () => {
+		setEdgePopUp(!edgePopUp);
+	}
 
 	const toggleFuncName = () => {
 		setFuncName('');
@@ -101,6 +118,12 @@ function App() {
 	const toggleCallsFunctions = () => {
 		setCallsFunctions('');
 	};
+	const toggleFromNode = () => {
+		setFromNode('');
+	};
+	const toggleToNode = () => {
+		setToNode('');
+	};
 
 	return (
 		<div className="App">
@@ -111,20 +134,31 @@ function App() {
 					events={events}
 					getNetwork={(network) => {
 						//  if you want access to vis.js network api you can set the state in a parent component using this property
+						setNetwork(network);
 					}}
 				/>
-				{popUpVisible ? (
+				{nodePopUp ? (
 					<NodeInfo
 						funcName={funcName}
 						numCallers={numCallers}
 						funcBody={funcBody}
 						callsFunctions={callsFunctions}
-						visible={popUpVisible}
-						toggleVisible={toggleVisible}
+						visible={nodePopUp}
+						toggleVisible={toggleNodeVisible}
 						toggleFuncName={toggleFuncName}
 						toggleNumCallers={toggleNumCallers}
 						toggleFuncBody={toggleFuncBody}
 						toggleCallsFunctions={toggleCallsFunctions}
+					/>
+				) : null}
+				{edgePopUp ? (
+					<EdgeInfo
+						visible={edgePopUp}
+						fromNode={fromNode}
+						toNode={toNode}
+						toggleFromNode={toggleFromNode}
+						toggleToNode={toggleToNode}
+						toggleVisible={toggleEdgeVisible}
 					/>
 				) : null}
 			</div>
