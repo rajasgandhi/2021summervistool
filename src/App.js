@@ -56,6 +56,8 @@ function App() {
 	const [fromNode, setFromNode] = useState('');
 	const [toNode, setToNode] = useState('');
 
+	const graphHeight = Math.round(parseInt(window.innerHeight)) + 'px';
+
 	const graph = {
 		nodes: graphnodes,
 		edges: graphedges,
@@ -63,17 +65,13 @@ function App() {
 
 	const options = {
 		layout: {
-			//hierarchical: true,
+			
 		},
 		edges: {
 			color: '#000000',
 		},
-		nodes: {
-			//shape: "triangle"
-		},
-		height: '1000',
+		height: graphHeight,
 		autoResize: true,
-		physics: true,
 		interaction: {
 			hover: true,
 		},
@@ -87,7 +85,6 @@ function App() {
 			setFuncBody(programData[event.nodes]['function_body']);
 			setCallsFunctions(programData[event.nodes]['calls_functions'].toString());
 			setNodePopUp(true);
-			
 		},
 		selectEdge: function (event) {
 			//console.log(event);
@@ -95,7 +92,7 @@ function App() {
 			setFromNode(connectedNodes[0].toString());
 			setToNode(connectedNodes[1].toString());
 			setEdgePopUp(true);
-		}
+		},
 	};
 
 	const toggleNodeVisible = () => {
@@ -104,7 +101,7 @@ function App() {
 
 	const toggleEdgeVisible = () => {
 		setEdgePopUp(!edgePopUp);
-	}
+	};
 
 	const toggleFuncName = () => {
 		setFuncName('');
@@ -127,7 +124,7 @@ function App() {
 
 	return (
 		<div className="App">
-			<div id="treeWrapper">
+			<div id="treeWrapper" style={{ height: '100%', width: '100%' }}>
 				<Graph
 					graph={graph}
 					options={options}
