@@ -65,7 +65,7 @@ function App() {
 
 	const options = {
 		layout: {
-			
+
 		},
 		edges: {
 			color: '#000000',
