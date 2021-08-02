@@ -14,6 +14,8 @@
     "react-graph-vis": "^1.0.7",
     "react-modal": "^3.14.2",
     "react-scripts": "4.0.3",
+    "vis-data": "^7.1.2",
+    "vis-network": "^9.0.5",
     "web-vitals": "^1.1.2"
   },
   "scripts": {

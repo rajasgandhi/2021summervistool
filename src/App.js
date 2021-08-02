@@ -12,37 +12,43 @@ var graphedges = [];
 
 function getNodes() {
   graphnodes = [];
-  for (var key in programData) {
-    if (programData.hasOwnProperty(key)) {
-      var node = {
-        id: key,
-        label: key,
-        title: "Function name:" + key,
-      };
-      graphnodes.push(node);
+  for (var i = 0; i < programData.length; ++i) {
+    for (var key in programData[i]) {
+      if (programData[i].hasOwnProperty(key)) {
+        var node = {
+          id: key.toString(),
+          label: key.toString(),
+          title: i,
+        };
+        graphnodes.push(node);
+      }
+
+      let myArrSerialized = graphnodes.map((e) => JSON.stringify(e));
+      const mySetSerialized = new Set(myArrSerialized);
+
+      const myUniqueArrSerialized = [...mySetSerialized];
+      graphnodes = myUniqueArrSerialized.map((e) => JSON.parse(e));
     }
   }
-  let myArrSerialized = graphnodes.map((e) => JSON.stringify(e));
-  const mySetSerialized = new Set(myArrSerialized);
-
-  const myUniqueArrSerialized = [...mySetSerialized];
-  graphnodes = myUniqueArrSerialized.map((e) => JSON.parse(e));
-
-  //console.log(graphnodes);
 }
 
 function getEdges() {
-  for (var key in programData) {
-    if (programData.hasOwnProperty(key)) {
-      for (var i = 0; i < programData[key]["calls_functions"].length; i++) {
-        graphedges.push({
-          from: key,
-          to: programData[key]["calls_functions"][i],
-        });
+  for (var i = 0; i < programData.length; i++) {
+    for (var key in programData[i]) {
+      if (programData[i].hasOwnProperty(key)) {
+        for (
+          var j = 0;
+          j < programData[i][key]["calls_functions"].length;
+          j++
+        ) {
+          graphedges.push({
+            from: key,
+            to: programData[i][key]["calls_functions"][j],
+          });
+        }
       }
     }
   }
-  //console.log(graphedges);
 }
 
 function App() {
@@ -80,16 +86,23 @@ function App() {
 
   const events = {
     selectNode: function (event) {
-      //console.log(event);
+      network.selectNodes([event.nodes]);
+      let selectedNode = {};
+      for (var i = 0; i < graphnodes.length; i++) {
+        if (graphnodes[i][Object.keys(graphnodes[i])[0]] === event.nodes[0]) {
+          selectedNode = graphnodes[i];
+        }
+      }
       setFuncName(event.nodes);
-      setNumCallers(programData[event.nodes]["number_of_callers"]);
-      setFuncBody(programData[event.nodes]["function_body"]);
-      setCallsFunctions(programData[event.nodes]["calls_functions"].toString());
-      setArgumentList(programData[event.nodes]["argument_list"].toString());
+      setNumCallers(
+        programData[selectedNode["title"]][Object.keys(programData[selectedNode["title"]])[0]]["number_of_callers"]
+      );
+      setFuncBody(programData[selectedNode["title"]][Object.keys(programData[selectedNode["title"]])[0]]["function_body"]);
+      setCallsFunctions(programData[selectedNode["title"]][Object.keys(programData[selectedNode["title"]])[0]]["calls_functions"].toString());
+      setArgumentList(programData[selectedNode["title"]][Object.keys(programData[selectedNode["title"]])[0]]["argument_list"].toString());
       showNodePopUp();
     },
     selectEdge: function (event) {
-      //console.log(event);
       const connectedNodes = network.getConnectedNodes(event.edges);
       if (connectedNodes[0] != null && connectedNodes[1] != null) {
         setFromNode(connectedNodes[0].toString());
