@@ -4,6 +4,7 @@ import Graph from "react-graph-vis";
 
 import { Button, Modal } from "react-bootstrap";
 import "bootstrap/dist/css/bootstrap.min.css";
+import styles from "./modalstyle.css";
 
 var programData = require("./outputtransformed.json");
 
@@ -74,7 +75,10 @@ function App() {
 
   const options = {
     layout: {
-      hierarchical: true,
+      hierarchical: {
+        enabled: true,
+        nodeSpacing: 150,
+      }
     },
     edges: {
       color: "#000000",
@@ -83,11 +87,13 @@ function App() {
     autoResize: true,
     interaction: {
       //hover: true,
+      selectConnectedEdges: false,
     },
   };
 
   const events = {
     selectNode: function (event) {
+      //event.preventDefault();
       network.selectNodes([event.nodes]);
       let selectedNode = {};
       for (var i = 0; i < graphnodes.length; i++) {
@@ -132,7 +138,7 @@ function App() {
 
   return (
     <div className="App">
-      <div id="treeWrapper" style={{ height: "100%", width: "100%" }}>
+      <div id="treeWrapper" >
         <Graph
           graph={graph}
           options={options}
@@ -143,9 +149,9 @@ function App() {
           }}
         />
 
-        <Modal show={nodePopUp} onHide={hideNodePopUp}>
+        <Modal dialogClassName="fullscreen-modal" show={nodePopUp} onHide={hideNodePopUp}>
           <Modal.Header closeButton>
-            <Modal.Title>Modal heading</Modal.Title>
+            <Modal.Title>Function: {funcName}</Modal.Title>
           </Modal.Header>
           <Modal.Body>
             <p>Function Name: {funcName}</p>
@@ -160,9 +166,9 @@ function App() {
             </Button>
           </Modal.Footer>
         </Modal>
-        <Modal show={edgePopUp} onHide={hideEdgePopUp}>
+        <Modal dialogClassName="fullscreen-modal" show={edgePopUp} onHide={hideEdgePopUp}>
           <Modal.Header closeButton>
-            <Modal.Title>Modal heading</Modal.Title>
+            <Modal.Title>Edge: {fromNode} to {toNode}</Modal.Title>
           </Modal.Header>
           <Modal.Body>
             <p>From node: {fromNode}</p>
