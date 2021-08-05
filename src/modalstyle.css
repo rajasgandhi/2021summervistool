@@ -1,18 +1,22 @@
-.fullscreen-modal.modal-dialog  {
-    position: absolute;
-    top: 40px;
-    left: 40px;
-    right: 40px;
-    bottom: 40px;
-    /*background-color: papayawhip;*/
+.fullscreen-modal.modal-dialog {
+  position: absolute;
+  top: 40px;
+  left: 40px;
+  right: 40px;
+  bottom: 40px;
+  /*background-color: papayawhip;*/
 }
 
 .fullscreen-modal .modal-content {
-    position: fixed;
-    top: 50px;
-    left: 50px;
-    right: 50px;
-    bottom: 50px;
-    width: 95%;
-    /*background-color: rebeccapurple;*/
- }
+  position: fixed;
+  top: 50px;
+  left: 50px;
+  right: 50px;
+  bottom: 50px;
+  width: 95%;
+  /*background-color: rebeccapurple;*/
+}
+
+.msg-wrapper {
+  white-space: pre-wrap;
+}

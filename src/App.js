@@ -110,6 +110,7 @@ function App() {
         programData[selectedNode["title"]][
           Object.keys(programData[selectedNode["title"]])[0]
         ]["function_body"];
+        console.log(typeof(functionBody));
       const callsFunctions =
         programData[selectedNode["title"]][
           Object.keys(programData[selectedNode["title"]])[0]
@@ -168,6 +169,7 @@ function App() {
           dialogClassName="fullscreen-modal"
           show={nodePopUp}
           onHide={hideNodePopUp}
+          scrollable={true}
         >
           <Modal.Header closeButton>
             <Modal.Title>Function: {funcName}</Modal.Title>
@@ -175,7 +177,7 @@ function App() {
           <Modal.Body>
             <p>Function Name: {funcName}</p>
             <p>Number of Callers: {numCallers}</p>
-            <p>Function Body: {funcBody}</p>
+            <p>Function Body: <div className="msg-wrapper">{funcBody}</div></p>
             <p>Calls Functions: {callsFunctions}</p>
             <p>Argument List: {argumentList}</p>
           </Modal.Body>
