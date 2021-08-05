@@ -78,7 +78,7 @@ function App() {
       hierarchical: {
         enabled: true,
         nodeSpacing: 150,
-      }
+      },
     },
     edges: {
       color: "#000000",
@@ -101,13 +101,28 @@ function App() {
           selectedNode = graphnodes[i];
         }
       }
-      setFuncName(event.nodes);
-      setNumCallers(
-        programData[selectedNode["title"]][Object.keys(programData[selectedNode["title"]])[0]]["number_of_callers"]
-      );
-      setFuncBody(programData[selectedNode["title"]][Object.keys(programData[selectedNode["title"]])[0]]["function_body"]);
-      setCallsFunctions(programData[selectedNode["title"]][Object.keys(programData[selectedNode["title"]])[0]]["calls_functions"].toString());
-      setArgumentList(programData[selectedNode["title"]][Object.keys(programData[selectedNode["title"]])[0]]["argument_list"].toString());
+      const functionName = event.nodes;
+      const numCallers =
+        programData[selectedNode["title"]][
+          Object.keys(programData[selectedNode["title"]])[0]
+        ]["number_of_callers"];
+      const functionBody =
+        programData[selectedNode["title"]][
+          Object.keys(programData[selectedNode["title"]])[0]
+        ]["function_body"];
+      const callsFunctions =
+        programData[selectedNode["title"]][
+          Object.keys(programData[selectedNode["title"]])[0]
+        ]["calls_functions"].toString();
+      const argumentList =
+        programData[selectedNode["title"]][
+          Object.keys(programData[selectedNode["title"]])[0]
+        ]["argument_list"].toString();
+      setFuncName(functionName);
+      setNumCallers(numCallers);
+      setFuncBody(functionBody);
+      setCallsFunctions(callsFunctions !== "" ? callsFunctions : "None");
+      setArgumentList(argumentList !== "" ? argumentList : "None");
       showNodePopUp();
     },
     selectEdge: function (event) {
@@ -138,7 +153,7 @@ function App() {
 
   return (
     <div className="App">
-      <div id="treeWrapper" >
+      <div id="treeWrapper">
         <Graph
           graph={graph}
           options={options}
@@ -149,7 +164,11 @@ function App() {
           }}
         />
 
-        <Modal dialogClassName="fullscreen-modal" show={nodePopUp} onHide={hideNodePopUp}>
+        <Modal
+          dialogClassName="fullscreen-modal"
+          show={nodePopUp}
+          onHide={hideNodePopUp}
+        >
           <Modal.Header closeButton>
             <Modal.Title>Function: {funcName}</Modal.Title>
           </Modal.Header>
@@ -166,9 +185,15 @@ function App() {
             </Button>
           </Modal.Footer>
         </Modal>
-        <Modal dialogClassName="fullscreen-modal" show={edgePopUp} onHide={hideEdgePopUp}>
+        <Modal
+          dialogClassName="fullscreen-modal"
+          show={edgePopUp}
+          onHide={hideEdgePopUp}
+        >
           <Modal.Header closeButton>
-            <Modal.Title>Edge: {fromNode} to {toNode}</Modal.Title>
+            <Modal.Title>
+              Edge: {fromNode} to {toNode}
+            </Modal.Title>
           </Modal.Header>
           <Modal.Body>
             <p>From node: {fromNode}</p>
